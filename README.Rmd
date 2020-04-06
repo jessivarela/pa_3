@@ -1,0 +1,87 @@
+---
+title: "Pa_3"
+output: github_document
+---
+# Programming Assignment 3
+
+Respond to the following questions:
+Examine the portion of the script you see below. In your own words what does this section do and why does it work? Demonstrate that you understand the code….
+
+vonset = Get starting point: 2, 2
+voffset = Get end point: 2, 2
+durationV = voffset - vonset
+per20 = vonset + (durationV * 0.20)
+per35 = vonset + (durationV * 0.35)
+per50 = vonset + (durationV * 0.50)
+per65 = vonset + (durationV * 0.65)
+per80 = vonset + (durationV * 0.80)
+
+**The code is describing the points when the vonset begins and when the voffset end and to find out the beginning and end duration you would subtract the vonset from the voffset and get the duration time.Then we find the trajectory length by sections (20, 35, 50, 65, 80) with the equations shown.**
+
+In a few short sentences describe the general outline of the script, what the purpose is, and how it acheives this purpose (hint: focus on the section dividers and the comments)
+
+**The script that we used this week helped us to understand how to use our data to extract the f1 and f2 centroids as well as the trajectory length, without having to do it one by one. The loop code allowed us to get all of the information we needed, such as words, f1_cent, f2_cent, language, and trajectory length in a matter of seconds, instead of having to do it all manually.**
+
+In a few short sentences describe how the segmenting procedure you used this week differs from that used in pa_2. What are the advantages and disadvantages?
+
+**This segmenting procedure was different because in the previous assignment we only needed to segment words in spanish, but this time we had to use languages (english and spanish and find the mea,sd, and trajectory lengths of each by language). The advantage that this holds is that when working with a lot of data through different codes it will eventually make your life easier. The disadvantage is that if you're not too good at coding it will be a bit of stressful until you get the hang of it.**
+
+# Load libraries and data
+
+```{r, libs, message=F, warning=F}
+library(tidyverse)
+```
+
+```{r, load-data}
+
+data <- read_csv("data/vowel_data.csv")
+
+print(data)
+
+
+```
+
+## Descriptive statistics
+
+```{r, descriptives}
+# Calculate means and standard deviations of your English/Spanish vowels ------
+
+mean(data$f1_cent, na.rm = TRUE)  
+
+sd(data$f1_cent, na.rm = TRUE)
+
+mean(data$f2_cent,na.rm = TRUE)
+
+sd(data$f2_cent,na.rm = TRUE)
+
+mean(data$tl,na.rm = TRUE)
+
+sd (data$tl,na.rm = TRUE)
+
+
+# -----------------------------------------------------------------------------
+```
+
+```{r, plot1}
+# 1. Plot trajectory length as a function of vowel and language ---------------
+
+ggplot(data, aes(x = language, y = f1_cent)) +
+  geom_point(aes(color = vowel))
+
+ggplot(data, aes(x = language, y = f2_cent)) +
+  geom_point(aes(color = vowel))
+
+ggplot(data, aes(x = language, y = tl)) +
+  geom_point(aes(color = vowel))
+
+aggregate(f1_cent ~ language + vowel , FUN = sd, data = data)
+boxplot(f1_cent ~ language + vowel, data = data)
+
+aggregate(f2_cent ~ language + vowel, FUN = sd, data = data)
+boxplot(f2_cent ~ language + vowel, data = data)
+
+aggregate(tl ~ language + vowel, FUN = sd, data = data)
+boxplot(tl ~ language + vowel, data = data)
+
+# -----------------------------------------------------------------------------
+```
